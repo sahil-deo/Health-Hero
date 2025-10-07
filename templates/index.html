@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Tasks | Health Hero</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .tasks-container {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 16px rgba(44, 62, 80, 0.10);
+            max-width: 420px;
+            margin: 48px auto 0 auto;
+            padding: 2.2em 1.5em 1.5em 1.5em;
+        }
+        .tasks-title {
+            color: #222;
+            font-size: 1.7em;
+            font-weight: 600;
+            margin-bottom: 0.7em;
+            letter-spacing: 0.01em;
+        }
+        .streak-inline {
+            text-align: center;
+            margin-bottom: 1.2em;
+            font-size: 1.08em;
+            color: #ffb703;
+            font-weight: 500;
+        }
+        .tasks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .tasks li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 1em;
+            padding: 0.9em 1em;
+            box-shadow: 0 1px 4px rgba(44, 62, 80, 0.04);
+            transition: background 0.2s;
+        }
+        .tasks li:last-child { margin-bottom: 0; }
+        .task-label {
+            flex: 1;
+            font-size: 1.08em;
+            color: #222;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+        }
+        .task-label.completed-task {
+            text-decoration: line-through;
+            color: #b0b0b0;
+        }
+        .check-btn {
+            background: #e0ffe7;
+            color: #52b788;
+            border: 2px solid #52b788;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        .check-btn.checked, .check-btn:disabled {
+            background: #52b788;
+            color: #fff;
+            border: 2px solid #52b788;
+            cursor: default;
+        }
+        .check-btn:focus { outline: none; }
+        .tasks li:hover:not(:has(.check-btn:disabled)) {
+            background: #e9f5ee;
+        }
+        .reset-info {
+            text-align:center;
+            margin-top:18px;
+            color:#40916c;
+            font-size:0.98em;
+        }
+        @media (max-width: 600px) {
+            .tasks-container { max-width: 98vw; margin: 20px 2vw 0 2vw; padding: 1.2em 0.7em; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-heart-pulse"></i> Health Hero</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/tasks">Tasks</a></li>
+            <li><a href="/streak">Streak</a></li>
+            <li><a href="/benefits">Benefits</a></li>
+        </ul>
+    </nav>
+    <main class="tasks-container">
+        <div class="tasks-title">Today's Health Tasks</div>
+        <div class="streak-inline">
+            <i class="fa-solid fa-fire"></i> Streak: <span id="streak">{{ streak }}</span> days
+        </div>
+        <form method="POST" action="/update" id="tasks-form">
+            <ul class="tasks">
+                {% for task in tasks %}
+                <li class="task-row{% if task['done'] %} done{% endif %}" data-taskid="{{ task['id'] }}" {% if task['done'] %}style="pointer-events:none;opacity:0.6;"{% endif %}>
+                    <span class="task-label{% if task['done'] %} completed-task{% endif %}">{{ task['name'] }}</span>
+                    <button type="submit" name="task" value="{{ task['id'] }}" class="check-btn {% if task['done'] %}checked{% endif %}" {% if task['done'] %}disabled{% endif %} aria-label="Mark as complete" style="pointer-events:none;">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+            <input type="hidden" name="task" id="hidden-task-input">
+        </form>
+        <script>
+        document.querySelectorAll('.task-row').forEach(function(row) {
+            if (!row.classList.contains('done')) {
+                row.addEventListener('click', function() {
+                    document.getElementById('hidden-task-input').value = row.getAttribute('data-taskid');
+                    document.getElementById('tasks-form').submit();
+                });
+            }
+        });
+        </script>
+        <div class="reset-info">
+            <i class="fa-solid fa-rotate"></i> Tasks reset daily at midnight.
+        </div>
+    </main>
+    <footer>
+        &copy; 2025 Health Hero. Stay healthy!
+    </footer>
+</body>
+</html>

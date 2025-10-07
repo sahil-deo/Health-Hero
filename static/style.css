@@ -1,0 +1,194 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #e0ffe7 0%, #b2f7ef 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: #222;
+}
+
+.navbar {
+    background: #2d6a4f;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7em 2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.navbar .logo {
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5em;
+    margin: 0;
+    padding: 0;
+}
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.navbar ul li a:hover {
+    color: #95d5b2;
+}
+
+main.landing {
+    max-width: 500px;
+    margin: 60px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    padding: 2.5em 2em 2em 2em;
+    text-align: center;
+}
+main.landing h1 {
+    color: #2d6a4f;
+    font-size: 2.1em;
+    margin-bottom: 0.5em;
+}
+main.landing p {
+    color: #40916c;
+    font-size: 1.1em;
+    margin-bottom: 1.5em;
+}
+.cta-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #52b788 0%, #40916c 100%);
+    color: #fff;
+    padding: 0.8em 2em;
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+.cta-btn:hover {
+    background: linear-gradient(90deg, #40916c 0%, #52b788 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+.streak-page {
+    max-width: 400px;
+    margin: 60px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    padding: 2em 2em 1.5em 2em;
+    text-align: center;
+}
+.streak-display {
+    font-size: 2.5em;
+    color: #ffb703;
+    margin: 1em 0 0.5em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+}
+.streak-number {
+    font-weight: bold;
+    color: #2d6a4f;
+    font-size: 2em;
+}
+.streak-label {
+    color: #40916c;
+    font-size: 1.1em;
+}
+.streak-desc {
+    color: #40916c;
+    margin-bottom: 1.5em;
+}
+
+.benefits-page {
+    max-width: 500px;
+    margin: 60px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    padding: 2em 2em 1.5em 2em;
+    text-align: center;
+}
+.benefits-list {
+    text-align: left;
+    margin: 1.5em auto 2em auto;
+    padding: 0 0 0 1.2em;
+    color: #2d6a4f;
+    font-size: 1.1em;
+}
+.benefits-list li {
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+
+footer {
+    text-align: center;
+    color: #40916c;
+    margin: 2em 0 1em 0;
+    font-size: 1em;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .navbar { flex-direction: column; padding: 0.7em 1em; }
+    .navbar ul { gap: 0.7em; }
+    main.landing, .streak-page, .benefits-page { max-width: 98vw; margin: 20px 2vw 0 2vw; padding: 1.2em 0.7em; }
+}
+
+/* Tasks page overrides */
+.tasks-container {
+    max-width: 500px;
+    margin: 60px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    padding: 2em 2em 1.5em 2em;
+}
+.tasks-title {
+    color: #2d6a4f;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 0.7em;
+}
+.streak-inline {
+    text-align: center;
+    margin-bottom: 1.2em;
+    font-size: 1.1em;
+    color: #40916c;
+}
+.tasks {
+    list-style: none;
+    padding: 0;
+}
+.tasks li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+.tasks li:last-child { border-bottom: none; }
+.task-label { flex: 1; }
+.check-btn {
+    background: #52b788;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.check-btn.checked { background: #2d6a4f; }
