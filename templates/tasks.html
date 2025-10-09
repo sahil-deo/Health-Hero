@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Tasks | Health Hero</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% extends "layout.html" %}
+
+{% block title %}Today's Tasks | Health Hero{% endblock %}
+
+{% block head %}
     <link rel="stylesheet" href="/static/style.css">
     <style>
+        /* Styles from original index.html, adapted for tasks.html */
         .tasks-container {
             background: #fff;
             border-radius: 18px;
@@ -21,6 +20,7 @@
             font-weight: 600;
             margin-bottom: 0.7em;
             letter-spacing: 0.01em;
+            text-align: center;
         }
         .streak-inline {
             text-align: center;
@@ -44,6 +44,11 @@
             padding: 0.9em 1em;
             box-shadow: 0 1px 4px rgba(44, 62, 80, 0.04);
             transition: background 0.2s;
+            cursor: pointer;
+        }
+        .tasks li.done {
+            opacity: 0.6;
+            pointer-events: none;
         }
         .tasks li:last-child { margin-bottom: 0; }
         .task-label {
@@ -71,15 +76,14 @@
             align-items: center;
             justify-content: center;
             transition: background 0.2s, color 0.2s, border 0.2s;
+            pointer-events:none; /* Button inside clickable li */
         }
-        .check-btn.checked, .check-btn:disabled {
+        .check-btn.checked {
             background: #52b788;
             color: #fff;
             border: 2px solid #52b788;
-            cursor: default;
         }
-        .check-btn:focus { outline: none; }
-        .tasks li:hover:not(:has(.check-btn:disabled)) {
+        .tasks li:hover:not(.done) {
             background: #e9f5ee;
         }
         .reset-info {
@@ -92,17 +96,9 @@
             .tasks-container { max-width: 98vw; margin: 20px 2vw 0 2vw; padding: 1.2em 0.7em; }
         }
     </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="logo"><i class="fa-solid fa-heart-pulse"></i> Health Hero</div>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/tasks">Tasks</a></li>
-            <li><a href="/streak">Streak</a></li>
-            <li><a href="/benefits">Benefits</a></li>
-        </ul>
-    </nav>
+{% endblock %}
+
+{% block content %}
     <main class="tasks-container">
         <div class="tasks-title">Today's Health Tasks</div>
         <div class="streak-inline">
@@ -111,9 +107,9 @@
         <form method="POST" action="/update" id="tasks-form">
             <ul class="tasks">
                 {% for task in tasks %}
-                <li class="task-row{% if task['done'] %} done{% endif %}" data-taskid="{{ task['id'] }}" {% if task['done'] %}style="pointer-events:none;opacity:0.6;"{% endif %}>
+                <li class="task-row{% if task['done'] %} done{% endif %}" data-taskid="{{ task['id'] }}">
                     <span class="task-label{% if task['done'] %} completed-task{% endif %}">{{ task['name'] }}</span>
-                    <button type="submit" name="task" value="{{ task['id'] }}" class="check-btn {% if task['done'] %}checked{% endif %}" {% if task['done'] %}disabled{% endif %} aria-label="Mark as complete" style="pointer-events:none;">
+                    <button type="button" class="check-btn {% if task['done'] %}checked{% endif %}" aria-label="Mark as complete">
                         <i class="fa-solid fa-check"></i>
                     </button>
                 </li>
@@ -135,8 +131,4 @@
             <i class="fa-solid fa-rotate"></i> Tasks reset daily at midnight.
         </div>
     </main>
-    <footer>
-        &copy; 2025 Health Hero. Stay healthy!
-    </footer>
-</body>
-</html>
+{% endblock %}

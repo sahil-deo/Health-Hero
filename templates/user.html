@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Info | Health Hero</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% extends "layout.html" %}
+
+{% block title %}User Info | Health Hero{% endblock %}
+
+{% block head %}
     <link rel="stylesheet" href="/static/style.css">
     <style>
         .user-form-container {
@@ -32,6 +30,7 @@
             margin-bottom: 0.2em;
             color: #2d6a4f;
             font-weight: 500;
+            text-align: left;
         }
         .user-form input, .user-form select {
             width: 100%;
@@ -60,45 +59,36 @@
             background: linear-gradient(90deg, #40916c 0%, #52b788 100%);
         }
     </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="logo"><i class="fa-solid fa-heart-pulse"></i> Health Hero</div>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/user">User</a></li>
-            <li><a href="/tasks">Tasks</a></li>
-            <li><a href="/streak">Streak</a></li>
-            <li><a href="/benefits">Benefits</a></li>
-        </ul>
-    </nav>
+{% endblock %}
+
+{% block content %}
     <main class="user-form-container">
-        <div class="user-form-title">{{ user and 'Edit your info' or 'Tell us about yourself' }}</div>
+        <div class="user-form-title">{{ user.name and 'Edit your info' or 'Tell us about yourself' }}</div>
         <form class="user-form" method="POST" action="/user">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" required maxlength="32" placeholder="Your name" value="{{ user.name if user else '' }}">
+            <input type="text" id="name" name="name" required maxlength="32" placeholder="Your name" value="{{ user.name if user.name else '' }}">
+            
             <label for="age">Age</label>
-            <input type="number" id="age" name="age" required min="1" max="120" placeholder="Your age" value="{{ user.age if user else '' }}">
+            <input type="number" id="age" name="age" required min="1" max="120" placeholder="Your age" value="{{ user.age if user.age else '' }}">
+            
             <label for="gender">Gender</label>
             <select id="gender" name="gender" required>
-                <option value="" {% if not user or not user.gender %}selected{% endif %}>Select</option>
-                <option value="male" {% if user and user.gender == 'male' %}selected{% endif %}>Male</option>
-                <option value="female" {% if user and user.gender == 'female' %}selected{% endif %}>Female</option>
-                <option value="other" {% if user and user.gender == 'other' %}selected{% endif %}>Other</option>
-                <option value="prefer_not" {% if user and user.gender == 'prefer_not' %}selected{% endif %}>Prefer not to say</option>
+                <option value="" {% if not user.gender %}selected{% endif %}>Select</option>
+                <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+                <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+                <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Other</option>
+                <option value="prefer_not" {% if user.gender == 'prefer_not' %}selected{% endif %}>Prefer not to say</option>
             </select>
+            
             <label for="goal">Health Goal</label>
-            <input type="text" id="goal" name="goal" maxlength="64" placeholder="e.g. Lose weight, Sleep better, etc." value="{{ user.goal if user else '' }}">
-            <button type="submit">{{ user and 'Update Info' or 'Save & Continue' }}</button>
+            <input type="text" id="goal" name="goal" maxlength="64" placeholder="e.g. Lose weight, Sleep better, etc." value="{{ user.goal if user.goal else '' }}">
+            
+            <button type="submit">{{ user.name and 'Update Info' or 'Save & Continue' }}</button>
         </form>
-        {% if user %}
+        {% if user.name %}
         <form method="POST" action="/user" onsubmit="return confirm('Are you sure you want to clear all your data? This cannot be undone.');" style="margin-top:1.2em;">
-            <button type="submit" name="clear" value="1" style="width:100%;background:linear-gradient(90deg,#e63946 0%,#ff758f 100%);color:#fff;padding:0.8em;border:none;border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;transition:background 0.2s;">Clear All Data</button>
+            <button type="submit" name="clear" value="1" style="width:100%;background:linear-gradient(90deg,#e63946 0%,#ff758f 100%);color:#fff;padding:0.8em;border:none;border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;transition:background 0.2s;">Delete Account</button>
         </form>
         {% endif %}
     </main>
-    <footer>
-        &copy; 2025 Health Hero. Stay healthy!
-    </footer>
-</body>
-</html>
+{% endblock %}

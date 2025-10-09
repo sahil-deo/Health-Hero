@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Health Hero</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .admin-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+            padding: 2em;
+        }
+        .admin-title { color: #2d6a4f; font-size: 2em; margin-bottom: 0.7em; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em; margin-bottom: 2em; }
+        .stat-card { background: #f7fafc; padding: 1em; border-radius: 12px; text-align: center; border: 1px solid #e0ffe7; }
+        .stat-card h3 { margin: 0 0 0.5em 0; color: #40916c; font-size: 1.1em; }
+        .stat-card p { margin: 0; color: #2d6a4f; font-size: 1.8em; font-weight: bold; }
+        .user-table { width: 100%; border-collapse: collapse; overflow-x: auto; display: block; }
+        .user-table th, .user-table td { padding: 0.8em; text-align: left; border-bottom: 1px solid #eee; white-space: nowrap;}
+        .user-table th { color: #2d6a4f; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-user-shield"></i> Admin Panel</div>
+        <ul>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+    <main class="admin-container">
+        <h1 class="admin-title">User Dashboard</h1>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <p>{{ stats.total_users }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avg. Streak</h3>
+                <p>{{ stats.avg_streak }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avg. Age</h3>
+                <p>{{ stats.avg_age }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Users Today</h3>
+                <p>{{ stats.users_today }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Users This Week</h3>
+                <p>{{ stats.users_weekly }}</p>
+            </div>
+        </div>
+
+        <h2 class="admin-title" style="font-size: 1.5em;">All Users</h2>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Goal</th>
+                    <th>Streak</th>
+                    <th>Last Login</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.age }}</td>
+                    <td>{{ user.gender or 'N/A' }}</td>
+                    <td>{{ user.goal or 'N/A' }}</td>
+                    <td>{{ user.streak }}</td>
+                    <td>{{ user.last_login.strftime('%Y-%m-%d %H:%M') if user.last_login else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        &copy; 2025 Health Hero. Admin View.
+    </footer>
+</body>
+</html>

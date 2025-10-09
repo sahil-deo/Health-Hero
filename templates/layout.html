@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Hero{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% if current_user.is_authenticated and current_user.username != 'admin' %}
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-heart-pulse"></i> Health Hero</div>
+        <ul>
+            <li><a href="{{ url_for('tasks') }}">Tasks</a></li>
+            <li><a href="{{ url_for('streak') }}">Streak</a></li>
+            <li><a href="{{ url_for('benefits') }}">Benefits</a></li>
+            <li><a href="{{ url_for('user') }}">Profile</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+    {% endif %}
+    
+    <div class="content-wrapper">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message" style="max-width: 500px; margin: 10px auto; padding: 1em; background: #e0ffe7; color: #2d6a4f; border-radius: 8px; text-align: center;">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        &copy; 2025 Health Hero. Stay healthy!
+    </footer>
+</body>
+</html>

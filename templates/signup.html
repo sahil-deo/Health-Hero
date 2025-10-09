@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Health Hero</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .signup-container {
+            max-width: 400px;
+            margin: 60px auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+            padding: 2.5em 2em 2em 2em;
+            text-align: center;
+        }
+        .signup-container h1 { color: #2d6a4f; font-size: 2.1em; margin-bottom: 1em; }
+        .signup-form { display: flex; flex-direction: column; gap: 1em; }
+        .signup-form input {
+            width: 100%;
+            padding: 0.8em;
+            border: 1px solid #b7e4c7;
+            border-radius: 8px;
+            font-size: 1em;
+            background: #f7fafc;
+            box-sizing: border-box;
+        }
+        .signup-form button {
+            background: linear-gradient(90deg, #52b788 0%, #40916c 100%);
+            color: #fff;
+            padding: 0.8em;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5em;
+        }
+        .flash-error { color: #e63946; margin-bottom: 1em; background-color: #ffcdd2; padding: 10px; border-radius: 8px;}
+        .login-link { margin-top: 1.5em; color: #40916c; }
+        .login-link a { color: #2d6a4f; font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <main class="signup-container">
+        <h1>Create Your Account</h1>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-error">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+        <form class="signup-form" method="POST" action="/signup">
+            <input type="text" id="username" name="username" required placeholder="Username" minlength="4">
+            <input type="password" id="password" name="password" required placeholder="Password" minlength="6">
+            <input type="text" id="name" name="name" required maxlength="32" placeholder="Your name">
+            <input type="number" id="age" name="age" required min="1" max="120" placeholder="Your age">
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="/login">Login</a>
+        </div>
+    </main>
+    <footer>
+        &copy; 2025 Health Hero. Stay healthy!
+    </footer>
+</body>
+</html>
