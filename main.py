@@ -10,13 +10,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'
-# Get the project's root directory
-project_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-# Create the path for the database file in the root directory
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Set the database URI to a file named 'healthhero.db' inside that directory.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'healthhero.db')
+# Set the database URI to your Render PostgreSQL database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cep:iDVMvkxhiDaJRD1Bb2gDlOFcwRTSmaIg@dpg-d3k86eili9vc73bv78t0-a/cepdb_h2eo'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -290,6 +286,4 @@ def init_db():
             print("Admin user created.")
 
 if __name__ == '__main__':
-    if not os.path.exists('healthhero.db'):
-        init_db()
     app.run(debug=True)
