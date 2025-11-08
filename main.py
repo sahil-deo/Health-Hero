@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'
 
 # Set the database URI to your Render PostgreSQL database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cep:iDVMvkxhiDaJRD1Bb2gDlOFcwRTSmaIg@dpg-d3k86eili9vc73bv78t0-a/cepdb_h2eo'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://avnadmin:AVNS_EkuE5ydpG9I_d0ctYB7@health-hero-health-hero.i.aivencloud.com:16456/defaultdb?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -69,10 +69,18 @@ def get_today():
 def reset_streak_and_tasks_if_needed(user):
     today = get_today()
     last_date_str = user.last_date
+    if not last_date_str:
+        user.last_date = today
+        db.session.commit()
+        return
     if last_date_str != today:
-        last_date = datetime.strptime(last_date_str, '%Y-%m-%d')
-        if (datetime.strptime(today, '%Y-%m-%d') - last_date).days > 1:
-            user.streak = 0
+        try:
+            last_date = datetime.strptime(last_date_str, '%Y-%m-%d')
+            if (datetime.strptime(today, '%Y-%m-%d') - last_date).days > 1:
+                user.streak = 0
+        except (ValueError, TypeError):
+            # If date format is invalid, reset to today
+            user.last_date = today
         user.completed_today = False
         user.last_date = today
         db.session.commit()
@@ -139,6 +147,12 @@ def signup():
 
         if not all([username, password, name, age]):
             flash("All fields are required!")
+            return redirect(url_for('signup'))
+
+        try:
+            age = int(age)
+        except (ValueError, TypeError):
+            flash("Age must be a valid number!")
             return redirect(url_for('signup'))
 
         if User.query.filter_by(username=username).first():
@@ -255,12 +269,18 @@ def user():
             return redirect(url_for('login'))
         
         current_user.name = request.form.get('name', '').strip()
-        current_user.age = request.form.get('age', '').strip()
+        age_str = request.form.get('age', '').strip()
         current_user.gender = request.form.get('gender', '').strip()
         current_user.goal = request.form.get('goal', '').strip()
 
-        if not current_user.name or not current_user.age:
+        if not current_user.name or not age_str:
             flash('Name and age are required.')
+            return render_template('user.html', user=current_user)
+        
+        try:
+            current_user.age = int(age_str)
+        except (ValueError, TypeError):
+            flash('Age must be a valid number.')
             return render_template('user.html', user=current_user)
 
         db.session.commit()
