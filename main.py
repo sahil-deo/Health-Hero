@@ -2,17 +2,21 @@ from datetime import datetime, timedelta
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import (LoginManager, UserMixin, login_user,
-                         logout_user, current_user, login_required)
+                     logout_user, current_user, login_required)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # --- App and DB Setup ---
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key_here')
 
-# Set the database URI to your Render PostgreSQL database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://avnadmin:AVNS_EkuE5ydpG9I_d0ctYB7@health-hero-health-hero.i.aivencloud.com:16456/defaultdb?sslmode=require'
+# Set the database URI from environment variable
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', os.getenv('DATABASE_URI'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
