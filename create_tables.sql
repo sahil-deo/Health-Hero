@@ -1,5 +1,3 @@
--- SQL commands to create tables for the Health Hero application
--- PostgreSQL compatible
 
 -- Create User table
 CREATE TABLE IF NOT EXISTS "user" (
@@ -16,8 +14,8 @@ CREATE TABLE IF NOT EXISTS "user" (
     last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create UserTask table
-CREATE TABLE IF NOT EXISTS "usertask" (
+-- Create User_Task table
+CREATE TABLE IF NOT EXISTS "user_task" (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     task_id VARCHAR(50) NOT NULL,
@@ -27,8 +25,7 @@ CREATE TABLE IF NOT EXISTS "usertask" (
     CONSTRAINT _user_task_date_uc UNIQUE (user_id, task_id, date)
 );
 
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_usertask_user_id ON "usertask"(user_id);
-CREATE INDEX IF NOT EXISTS idx_usertask_date ON "usertask"(date);
+CREATE INDEX IF NOT EXISTS idx_usertask_user_id ON "user_task"(user_id);
+CREATE INDEX IF NOT EXISTS idx_usertask_date ON "user_task"(date);
 CREATE INDEX IF NOT EXISTS idx_user_username ON "user"(username);
 

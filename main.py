@@ -7,15 +7,12 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# --- App and DB Setup ---
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key_here')
 
-# Set the database URI from environment variable
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', os.getenv('DATABASE_URI'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -31,7 +28,6 @@ HEALTH_TASKS = [
     {'id': 'fruit', 'name': 'Eat a fruit'},
 ]
 
-# --- Models ---
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,7 +61,6 @@ class UserTask(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# --- Helper Functions ---
 
 def get_today():
     return datetime.now().strftime('%Y-%m-%d')
@@ -83,17 +78,14 @@ def reset_streak_and_tasks_if_needed(user):
             if (datetime.strptime(today, '%Y-%m-%d') - last_date).days > 1:
                 user.streak = 0
         except (ValueError, TypeError):
-            # If date format is invalid, reset to today
             user.last_date = today
         user.completed_today = False
         user.last_date = today
         db.session.commit()
 
-# --- Routes ---
 
 @app.before_request
 def check_profile_completion():
-    # List of endpoints that are allowed without a complete profile
     allowed_endpoints = ['user', 'login', 'signup', 'logout', 'static']
     if (current_user.is_authenticated and 
         current_user.username != 'admin' and 
@@ -121,7 +113,7 @@ def login():
         # Admin login
         if username == 'admin' and password == 'password':
             admin_user = User.query.filter_by(username='admin').first()
-            if not admin_user: # Create admin if not exists
+            if not admin_user:
                  admin_user = User(username='admin', name='Admin')
                  admin_user.set_password('password')
                  db.session.add(admin_user)
