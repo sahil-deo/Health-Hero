@@ -68,7 +68,6 @@
                     <th>Gender</th>
                     <th>Goal</th>
                     <th>Streak</th>
-                    <th>Last Login</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,7 +80,6 @@
                     <td>{{ user.gender or 'N/A' }}</td>
                     <td>{{ user.goal or 'N/A' }}</td>
                     <td>{{ user.streak }}</td>
-                    <td>{{ user.last_login.strftime('%Y-%m-%d %H:%M') if user.last_login else 'N/A' }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

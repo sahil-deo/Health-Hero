@@ -22,7 +22,7 @@ login_manager.login_view = 'login'
 
 HEALTH_TASKS = [
     {'id': 'drink_water', 'name': 'Drink 8 glasses of water'},
-    {'id': 'walk', 'name': 'Walk 10,000 steps'},
+    {'id': 'walk', 'name': 'Walk 1,000 steps'},
     {'id': 'sleep', 'name': 'Sleep at least 7 hours'},
     {'id': 'meditate', 'name': 'Meditate for 10 minutes'},
     {'id': 'fruit', 'name': 'Eat a fruit'},
@@ -177,7 +177,7 @@ def admin():
     if current_user.username != 'admin':
         return redirect(url_for('tasks'))
 
-    users = User.query.filter(User.username != 'admin').all()
+    users = User.query.filter(User.username != 'admin').order_by(User.id).all()
     
     total_users = len(users)
     avg_streak = db.session.query(db.func.avg(User.streak)).filter(User.username != 'admin').scalar() or 0
